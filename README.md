@@ -14,7 +14,8 @@ Prerequisites
  3. The device's Android ID (if you want to reduce the risk of being logged
     out of Google). Run `adb shell settings get secure android_id` or Search Google Play for "device id" for plenty of apps
     that can reveal this information.
- 4. Google account login credentials (username and password). Create and use an App password when using 2-factor authentication: https://myaccount.google.com/apppasswords
+ 4. The value of the `oauth_token` cookie. For more details see
+    [the gpsoauth-java readme](https://github.com/rukins/gpsoauth-java/blob/b74ebca999d0f5bd38a2eafe3c0d50be552f6385/README.md#receiving-an-authentication-token).
 
 
 Instructions
