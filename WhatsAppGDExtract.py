@@ -157,33 +157,32 @@ def getConfigs():
     config = configparser.ConfigParser()
     try:
         config.read("settings.cfg")
-        gmail = config.get("auth", "gmail")
-        oauth_token = config.get("auth", "oauth_token", fallback="")
-        if not oauth_token:
-            try:
-                oauth_token = getpass("Enter your oauth_token for {}: ".format(gmail))
-            except KeyboardInterrupt:
-                quit("\nCancelled!")
-        android_id = config.get("auth", "android_id")
-        return {
-            "android_id": android_id,
-            "gmail": gmail,
-            "oauth_token": oauth_token,
-        }
     except (configparser.NoSectionError, configparser.NoOptionError):
-        quit("The 'settings.cfg' file is missing or corrupt!")
+        pass
+    gmail = config.get("auth", "gmail", fallback="")
+    if not gmail:
+        gmail = input("gmail: ")
+    android_id = config.get("auth", "android_id", fallback="")
+    if not android_id:
+        android_id = input('android_id ("adb shell settings get secure android_id"): ')
+    oauth_token = config.get("auth", "oauth_token", fallback="")
+    if not oauth_token:
+        print("How to get oauth_token: https://github.com/rukins/gpsoauth-java/blob/master/README.md#receiving-an-authentication-token")
+        print("Note: token can only be used once and expires quickly")
+        oauth_token = input(f"oauth_token for {gmail}: ")
+        
+    try:
+        with open("settings.cfg", "w") as configfile:
+            config.write(configfile)
+    except PermissionError:
+        from warnings import warn
+        warn("Could not write settings.cfg (No Permissions), if there are any changes they won't be saved")
 
-def createSettingsFile():
-    with open("settings.cfg", "w") as cfg:
-        cfg.write(dedent("""
-            [auth]
-            gmail = alias@gmail.com
-            # The oauth_token cookie. See README.md for details.
-            # You will be prompted if omitted.
-            oauth_token = your_oauth_token
-            # The result of "adb shell settings get secure android_id".
-            android_id = 0000000000000000
-            """).lstrip())
+    return {
+        "android_id": android_id,
+        "gmail": gmail,
+        "oauth_token": oauth_token,
+    }
 
 def backup_info(backup):
     metadata = json.loads(backup["metadata"])
@@ -204,8 +203,6 @@ def main(args):
     if len(args) != 2 or args[1] not in ("info", "list", "sync"):
         quit(__doc__.format(args[0]))
 
-    if not os.path.isfile("settings.cfg"):
-        createSettingsFile()
     wa_backup = WaBackup(**getConfigs())
     backups = wa_backup.backups()
 

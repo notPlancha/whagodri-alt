@@ -162,3 +162,6 @@ cython_debug/
 # Whatsapp extractor
 */*
 md5sum.txt
+# pixi environments
+.pixi
+*.egg-info

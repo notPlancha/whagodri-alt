@@ -8,19 +8,23 @@ from Google Drive.
 Prerequisites
 -------------
 
- 1. [Python 3][PYTHON]
- 2. Android device with WhatsApp installed and the Google Drive backup
-    feature enabled.
- 3. The device's Android ID (if you want to reduce the risk of being logged
+- The device's Android ID (if you want to reduce the risk of being logged
     out of Google). Run `adb shell settings get secure android_id` or Search Google Play for "device id" for plenty of apps
     that can reveal this information.
- 4. The value of the `oauth_token` cookie. For more details see
+- The value of the `oauth_token` cookie. For more details see
     [the gpsoauth-java readme](https://github.com/rukins/gpsoauth-java/blob/b74ebca999d0f5bd38a2eafe3c0d50be552f6385/README.md#receiving-an-authentication-token).
 
 
 Instructions
 ------------
+1. Install [pixi](https://prefix.dev/docs/pixi/overview#installation). Pixi is just to ease up dependency managment.
 
+2. 
+```bash
+git clone https://github.com/notPlancha/whagodri-alt.git
+pixi install
+pixi run main 
+```
  1. Extract `WhatsApp-GD-Extractor-master.zip`.
  2. Install dependencies: Run `python3 -m pip install -r requirements.txt`
     from your command console. Make sure gpsoauth is the latest version.
@@ -37,7 +41,6 @@ downloading, you may verify the integrity of the downloaded files using
 
 Troubleshooting
 ---------------
-
  1. Check that you have the required imports installed: `python3 -m pip
     install gpsoauth`
  2. If you have `Error:Need Browser`, go to this url to solve the issue:
